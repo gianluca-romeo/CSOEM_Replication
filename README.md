@@ -6,7 +6,7 @@ Replication of the models in:
 > *Closing Small Open Economy Models*,  
 > Journal of International Economics, 61, 163–185.
 
-The project reproduces impulse response functions and second moments for the SGU models using Julia.
+The project reproduces impulse response functions and second moments for the models using Julia.
 
 The implementation is based on the Dynare replication code by Johannes Pfeifer:
 https://github.com/JohannesPfeifer/DSGE_mod/tree/master/SGU_2003

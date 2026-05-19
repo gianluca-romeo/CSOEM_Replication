@@ -1,4 +1,4 @@
-# CSOE Replication Project
+# CSOEM Replication Project
 
 Replication of the small open economy models in:
 
@@ -13,21 +13,21 @@ This project reproduces impulse response functions and second moments for the fi
 ## Project Structure
 
 ```text
-
-src/
-
-    models.jl          # SGU model definitions
-
-    irf_tools.jl       # IRF generation and plotting
-
-    moment_tools.jl    # Moment table computation
-
-test/
-
-    runtests.jl        # Basic project tests
-
-output/
-
-    figures and tables/
-
-run.jl                 # Main execution script
+CSOE_Replication/
+│
+├── src/
+│   ├── models.jl          # SGU model specifications
+│   ├── irf_tools.jl       # IRF generation and plotting
+│   └── moment_tools.jl    # Computation of second moments
+│
+├── test/
+│   └── runtests.jl        # Basic project tests
+│
+├── output/
+│   └── figures and tables/
+│
+├── run.jl                 # Main execution script
+├── Project.toml           # Project dependencies
+├── Manifest.toml          # Reproducible package versions
+└── README.md
+```

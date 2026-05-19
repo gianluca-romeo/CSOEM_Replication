@@ -36,7 +36,7 @@ CSOEM_Replication/
 
 ## Installation
 
-Run once on a new machine:
+Open Julia in the project directory and run:
 
 ```julia
 using Pkg
@@ -46,7 +46,7 @@ Pkg.instantiate()
 
 ## Run
 
-From the project directory, run:
+From the terminal, inside the project directory:
 
 ```bash
 julia run.jl

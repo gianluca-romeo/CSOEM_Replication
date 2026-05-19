@@ -1,14 +1,16 @@
-# CSOEM Replication Project
+# CSOEM Replication
 
-Replication of the small open economy models in:
+Replication of the models in:
 
 > Schmitt-Grohé, S. and Uribe, M. (2003),  
-
 > *Closing Small Open Economy Models*,  
-
 > Journal of International Economics, 61, 163–185.
 
-This project reproduces impulse response functions and second moments for the five SGU model specifications using Julia and `MacroModelling.jl`.
+The project reproduces impulse response functions and second moments for the SGU models using Julia.
+
+The implementation is based on the Dynare replication code by Johannes Pfeifer:
+https://github.com/JohannesPfeifer/DSGE_mod/tree/master/SGU_2003
+
 
 ## Project Structure
 
@@ -31,3 +33,26 @@ CSOE_Replication/
 ├── Manifest.toml          # Reproducible package versions
 └── README.md
 ```
+
+## Installation
+
+Run once on a new machine:
+
+```julia
+using Pkg
+Pkg.activate(".")
+Pkg.instantiate()
+```
+
+## Run
+
+Run the project with:
+
+```bash
+julia run.jl
+```
+
+## Authors
+
+- Gianluca Romeo
+- Matteo Cagno

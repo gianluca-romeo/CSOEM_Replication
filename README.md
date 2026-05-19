@@ -15,7 +15,7 @@ https://github.com/JohannesPfeifer/DSGE_mod/tree/master/SGU_2003
 ## Project Structure
 
 ```text
-CSOE_Replication/
+CSOEM_Replication/
 │
 ├── src/
 │   ├── models.jl          # SGU model specifications

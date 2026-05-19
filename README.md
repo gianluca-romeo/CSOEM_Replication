@@ -46,7 +46,7 @@ Pkg.instantiate()
 
 ## Run
 
-Run the project with:
+From the project directory, run:
 
 ```bash
 julia run.jl

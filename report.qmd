@@ -2,8 +2,13 @@
 title: "Replication of Schmitt-Grohé and Uribe (2003)"
 subtitle: "Closing Small Open Economy Models"
 author:
-  - "Gianluca Romeo"
-  - "Matteo Cagno"
+  - name: Gianluca Romeo
+    affiliation: Collegio Carlo Alberto and University of Turin
+    email: gianlucaromeo2000@gmail.com
+
+  - name: Matteo Cagno
+    affiliation: Collegio Carlo Alberto and University of Turin
+    email: matteo.cagno@carloalberto.org
 format:
   html:
     toc: true
@@ -15,84 +20,112 @@ execute:
   message: false
 ---
 
-# CCA Computational Economics Replication Project
+::: callout-note
+## Collegio Carlo Alberto Replication Project
 
-Replication and extension of:
+This report was created as part of the assessment for the [Computational Economics Course](https://floswald.github.io/CompEcon/) in the PhD program at Collegio Carlo Alberto taught by Florian Oswald.
+:::
+
+# Introduction
+
+This project replicates the results of:
 
 > Schmitt-Grohé, S. and Uribe, M. (2003),  
 > *Closing Small Open Economy Models*,  
 > Journal of International Economics, 61, 163–185.
 
-## Authors
+The paper studies alternative methods for closing small open economy models and compares their quantitative implications for business cycle dynamics and second moments.
 
-**Gianluca Romeo**  
-Collegio Carlo Alberto and Unito
+The project reproduces the main model specifications presented in the paper using Julia and the `MacroModelling.jl` package. In particular, we replicate the impulse response functions and unconditional second moments for Models 1 to 4.
 
-**Matteo Cagno**  
-Collegio Carlo Alberto and Unito
+In addition, we extend the original analysis by implementing Model 5 under perfect foresight and studying the effects of alternative terminal conditions on the transitional dynamics of the economy.
 
-## Note
-
-This report was created as part of the assessment for the Computational Economics course at Collegio Carlo Alberto.
-
-# Paper and Replication Package
-
-This project replicates the small open economy models studied in Schmitt-Grohé and Uribe (2003).
-
-The implementation of Models 1–4 is based on the Dynare replication code by Johannes Pfeifer:
+The implementation is partly based on the Dynare replication files provided by Johannes Pfeifer:
 
 <https://github.com/JohannesPfeifer/DSGE_mod/tree/master/SGU_2003>
 
-We reproduce:
 
-1. impulse response functions for Models 1–4;
-2. second moments for Models 1–4;
-3. an extension for Model 5 using a nonlinear perfect-foresight solver.
 
-# High-Level Description of the Computational Problem
+# High Level Description of Computational Problem in Paper
 
-Schmitt-Grohé and Uribe (2003) study alternative ways to close small open economy models. Without a closure device, the net foreign asset position is generally non-stationary.
+The paper studies alternative methods for closing small open economy models in the presence of incomplete international financial markets. The main computational task consists of solving and simulating a set of dynamic stochastic general equilibrium (DSGE) models under different assumptions regarding the stationarity-inducing mechanism for foreign debt.
 
-Models 1–4 introduce different closure mechanisms:
+For Models 1 to 4, the paper analyzes stochastic small open economy RBC models subject to productivity shocks:
 
-1. endogenous discount factor;
-2. debt-elastic interest rate premium;
-3. portfolio adjustment costs;
-4. complete markets.
+$$
+a_t = \rho a_{t-1} + \sigma \varepsilon_t
+$$
 
-Model 5 is the non-stationary benchmark. Since it does not include a closure device, we solve it manually in Julia using a perfect-foresight method and compare different terminal conditions for foreign debt.
+where $begin:math:text$ a\_t $end:math:text$ denotes total factor productivity and $begin:math:text$ \\varepsilon\_t \\sim \\mathcal\{N\}\(0\,1\) $end:math:text$.
 
-# Computational Requirements
+The representative household solves an intertemporal optimization problem with standard Euler equations of the form:
 
-The replication is implemented in Julia.
+$$
+\lambda_t = \beta (1+r_t)\mathbb{E}_t[\lambda_{t+1}]
+$$
 
-Main Julia packages used:
+combined with intratemporal optimality conditions for labor supply and capital accumulation.
 
-- `MacroModelling.jl`
-- `Plots.jl`
-- `DataFrames.jl`
-- `CSV.jl`
-- `NLsolve.jl`
-- `Parameters.jl`
+The computational problem for these models involves:
+
+- computing the deterministic steady state;
+- obtaining a first-order perturbation approximation around the steady state;
+- solving the resulting linear rational expectations system;
+- simulating the model dynamics;
+- generating impulse response functions (IRFs);
+- computing unconditional second moments such as standard deviations, correlations, and autocorrelations.
+
+In our replication, Models 1 to 4 are implemented in Julia using the `MacroModelling.jl` package, which provides symbolic model parsing, automatic differentiation, perturbation-based solution methods, and simulation tools for DSGE models. The implementation reproduces the calibration and normalization conventions used in the original Dynare replication files by Johannes Pfeifer.
+
+The main quantitative comparison in the paper concerns different mechanisms used to induce stationarity in net foreign assets. These mechanisms modify the interest rate or discount factor dynamics while preserving similar short-run business-cycle properties.
+
+The extension developed in this project concerns Model 5, which is solved under perfect foresight rather than perturbation methods. In this case, the computational problem becomes a nonlinear transition-path problem over a finite horizon.
+
+The economy is initialized with a temporary productivity shock, and the entire transition path is solved simultaneously subject to equilibrium conditions and terminal restrictions. The nonlinear system includes equilibrium conditions such as:
+
+$$
+c_t + i_t + d_t = y_t + (1+r)d_{t-1}
+$$
+
+together with Euler equations and capital accumulation dynamics:
+
+$$
+k_{t+1} = (1-\delta)k_t + i_t
+$$
+
+Different terminal conditions are imposed to close the finite-horizon problem, including:
+
+- free terminal debt drift;
+- convergence of debt toward its steady-state value;
+- convergence of shadow prices and capital toward steady state.
+
+The nonlinear system is solved numerically using `NLsolve.jl`. After computing the transition paths, we generate perfect-foresight impulse response functions and compare how alternative terminal conditions affect the dynamics of consumption, external balances, and debt accumulation.
 
 # Our Computational Setup
 
-The computations were run on a local machine using Julia and the project environment specified in `Project.toml` and `Manifest.toml`.
+The project was developed and executed locally using both Julia and Dynare.
 
-To reproduce the project:
+The replication of Models 1 to 4 was implemented in Julia using the `MacroModelling.jl` package, while the original Dynare replication files by Johannes Pfeifer were used as a benchmark to validate impulse response functions, calibrations, and moment computations.
 
-```julia
-using Pkg
-Pkg.activate(".")
-Pkg.instantiate()
-```
+Model 5 was implemented entirely in Julia and solved under perfect foresight using nonlinear root-finding methods provided by `NLsolve.jl`.
 
-Then run:
+The computations were run on:
 
-```bash
-julia run.jl
-```
+- Apple MacBook Air
+- Apple Silicon M2 and M4 architectures
+- macOS environment
 
+The main software and packages used in the project are:
+
+- Julia
+- Dynare
+- MacroModelling.jl
+- NLsolve.jl
+- DataFrames.jl
+- CSV.jl
+- Plots.jl
+
+All package versions and dependencies are fully documented in the `Project.toml` and `Manifest.toml` files included in the repository, ensuring computational reproducibility.
 # Replication Results
 
 ## Models 1–4

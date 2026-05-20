@@ -1,62 +1,32 @@
 # ============================================================================
 # Tests for the replication of Schmitt-Grohé and Uribe (2003)
-#
 # Authors: Gianluca Romeo and Matteo Cagno
 # ============================================================================
 
 using Test
-using MacroModelling
 
-# Load project files
-include("../src/models.jl")
-include("../src/irf_tools.jl")
-include("../src/moment_tools.jl")
+include("../src/CSOEM_Replication.jl")
+using .CSOEM_Replication
 
-# Test: steady states
-@testset "Steady State Tests" begin
+@testset "Models 1-4 basic functionality" begin
 
-    models = [
-        SGU_M1,
-        SGU_M1a,
-        SGU_M2,
-        SGU_M3,
-        SGU_M4
-    ]
+    ss = CSOEM_Replication.get_non_stochastic_steady_state(CSOEM_Replication.SGU_M1)
+    @test length(ss) > 0
+    @test !any(isnan, ss)
 
-    for model in models
-
-        ss = get_non_stochastic_steady_state(model)
-
-        @test length(ss) > 0
-        @test !any(isnan, ss)
-
-    end
-end
-
-# Test: IRFs
-@testset "IRF Tests" begin
-
-    irf = get_irf(
-        SGU_M1;
+    irf = CSOEM_Replication.get_irf(
+        CSOEM_Replication.SGU_M1;
         periods = 3,
         variables = [:y]
     )
-
     @test size(irf, 2) == 3
 
-end
-
-# Test: moments
-@testset "Moment Tests" begin
-
-    stds = get_standard_deviation(SGU_M1)
-
+    stds = CSOEM_Replication.get_standard_deviation(CSOEM_Replication.SGU_M1)
     @test !any(isnan, stds)
 
 end
 
-# Test: output generation
-@testset "Output File Tests" begin
+@testset "Moment table output" begin
 
     active_models = Dict(
         "M1"  => 1,
@@ -66,10 +36,40 @@ end
         "M4"  => 0
     )
 
-    output_dir = joinpath(@__DIR__, "..", "output", "test")
+    output_dir = joinpath(@__DIR__, "output")
 
-    run_moment_table(active_models; output_dir)
+    CSOEM_Replication.run_moment_table(
+        active_models;
+        output_dir = output_dir
+    )
 
-    @test isfile(joinpath(output_dir, "SGU_moments.csv"))
+    @test isfile(joinpath(output_dir, "tables", "selected_models_moments.csv"))
+
+end
+
+@testset "Model 5 steady state and solver" begin
+
+    p = CSOEM_Replication.baseline_params()
+    ss = CSOEM_Replication.steady_state(p)
+
+    @test ss.c > 0
+    @test ss.k > 0
+    @test ss.h > 0
+    @test ss.y > 0
+    @test ss.i > 0
+    @test ss.λ > 0
+    @test ss.a == 0.0
+
+    df = CSOEM_Replication.solve_model5_pf(
+        horizon = 10,
+        shock_std = 0.01 / p.σ_tfp,
+        terminal_condition = :zero_terminal_debt_drift
+    )
+
+    @test size(df, 1) == 10
+    @test "output" in names(df)
+    @test "consumption" in names(df)
+    @test "debt" in names(df)
+    @test !any(any.(ismissing, eachcol(df)))
 
 end

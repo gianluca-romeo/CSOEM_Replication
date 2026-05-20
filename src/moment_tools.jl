@@ -1,9 +1,11 @@
-using MacroModelling
-using DelimitedFiles
+# =========================================================
+# Moment computation
+# =========================================================
 
 function run_moment_table(active_models; output_dir)
 
-    mkpath(output_dir)
+    table_dir = joinpath(output_dir, "tables")
+    mkpath(table_dir)
 
     all_models = Dict(
         "M1"  => SGU_M1,
@@ -114,7 +116,12 @@ function run_moment_table(active_models; output_dir)
         end
     end
 
-    csv_path = joinpath(output_dir, "SGU_moments.csv")
-    writedlm(csv_path, table, ',')
+    csv_path = joinpath(table_dir, "selected_models_moments.csv")
+
+    open(csv_path, "w") do io
+        for row in table
+            println(io, join(row, ","))
+        end
+    end
 
 end

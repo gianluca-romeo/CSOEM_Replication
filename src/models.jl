@@ -1,27 +1,6 @@
-# ============================================================================
-# Replication of Schmitt-Grohé and Uribe (2003)
-#
-# Authors: Gianluca Romeo and Matteo Cagno
-#
-# This file defines the five SGU model specifications using MacroModelling.jl.
-# The implementation follows the original Dynare replication files by
-# Johannes Pfeifer, with equations rewritten in levels and adapted to the
-# MacroModelling.jl syntax.
-#
-# The models correspond to:
-#   M1  : Endogenous discount factor
-#   M1a : Endogenous discount factor (without internalization)
-#   M2  : Debt-elastic interest rate premium
-#   M3  : Portfolio adjustment costs
-#   M4  : Complete asset market closure
-#
-# Reference:
-# Schmitt-Grohé, S. and Uribe, M. (2003),
-# "Closing Small Open Economy Models",
-# Journal of International Economics, 61, 163-185.
-# ============================================================================
-
-using MacroModelling
+# =========================================================
+# Model definitions for SGU (2003), Models 1 to 4.
+# =========================================================
 
 # Compute manually psi_1
 gamma_val = 2.0

@@ -1,5 +1,6 @@
-using Plots
-using AxisKeys
+# =========================================================
+# IRF generation and plotting utilities for Models 1 to 4.
+# =========================================================
 
 function get_model_dictionary()
     return Dict(
@@ -24,11 +25,11 @@ end
 function run_sgu_irfs(active_models;
     output_dir,
     periods = 10,
-    shock_size = 1 / 0.0129,
-    save_name = "SGU_IRFs.png"
+    shock_size = 1 / 0.0129
 )
 
-    mkpath(output_dir)
+    figures_dir = joinpath(output_dir, "figures")
+    mkpath(figures_dir)
 
     all_models = get_model_dictionary()
     styles = get_style_dictionary()
@@ -108,7 +109,7 @@ function run_sgu_irfs(active_models;
 
     display(p)
 
-    path = joinpath(output_dir, save_name)
+    path = joinpath(figures_dir, "selected_models_irfs.png")
     savefig(p, path)
 
     return p

@@ -41,7 +41,6 @@ The project reproduces the main model specifications presented in the paper usin
 In addition, we extend the original analysis by implementing Model 5 under perfect foresight and studying the effects of alternative terminal conditions on the transitional dynamics of the economy.
 
 The implementation is partly based on the Dynare replication files provided by Johannes Pfeifer:
-
 <https://github.com/JohannesPfeifer/DSGE_mod/tree/master/SGU_2003>
 
 
@@ -50,13 +49,13 @@ The implementation is partly based on the Dynare replication files provided by J
 
 The paper studies alternative methods for closing small open economy models in the presence of incomplete international financial markets. The main computational task consists of solving and simulating a set of dynamic stochastic general equilibrium (DSGE) models under different assumptions regarding the stationarity-inducing mechanism for foreign debt.
 
-For Models 1 to 4, the paper analyzes stochastic small open economy RBC models subject to productivity shocks:
+For Models 1 to 4, the paper analyzes stochastic small open economy models subject to productivity shocks:
 
 $$
 a_t = \rho a_{t-1} + \sigma \varepsilon_t
 $$
 
-where $begin:math:text$ a\_t $end:math:text$ denotes total factor productivity and $begin:math:text$ \\varepsilon\_t \\sim \\mathcal\{N\}\(0\,1\) $end:math:text$.
+where $a\_t$ denotes total factor productivity and $\varepsilon_t \sim \mathcal{N}(0,1)$.
 
 The representative household solves an intertemporal optimization problem with standard Euler equations of the form:
 
@@ -77,21 +76,7 @@ The computational problem for these models involves:
 
 In our replication, Models 1 to 4 are implemented in Julia using the `MacroModelling.jl` package, which provides symbolic model parsing, automatic differentiation, perturbation-based solution methods, and simulation tools for DSGE models. The implementation reproduces the calibration and normalization conventions used in the original Dynare replication files by Johannes Pfeifer.
 
-The main quantitative comparison in the paper concerns different mechanisms used to induce stationarity in net foreign assets. These mechanisms modify the interest rate or discount factor dynamics while preserving similar short-run business-cycle properties.
-
-The extension developed in this project concerns Model 5, which is solved under perfect foresight rather than perturbation methods. In this case, the computational problem becomes a nonlinear transition-path problem over a finite horizon.
-
-The economy is initialized with a temporary productivity shock, and the entire transition path is solved simultaneously subject to equilibrium conditions and terminal restrictions. The nonlinear system includes equilibrium conditions such as:
-
-$$
-c_t + i_t + d_t = y_t + (1+r)d_{t-1}
-$$
-
-together with Euler equations and capital accumulation dynamics:
-
-$$
-k_{t+1} = (1-\delta)k_t + i_t
-$$
+The extension developed in this project concerns Model 5, which is solved under perfect foresight rather than perturbation methods. In this case, the computational problem becomes a nonlinear transition-path problem over a finite horizon. The economy is initialized with a temporary productivity shock, and the entire transition path is solved simultaneously subject to equilibrium conditions and terminal restrictions. 
 
 Different terminal conditions are imposed to close the finite-horizon problem, including:
 

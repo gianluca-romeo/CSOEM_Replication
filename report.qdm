@@ -1,0 +1,145 @@
+---
+title: "Replication of Schmitt-Grohé and Uribe (2003)"
+subtitle: "Closing Small Open Economy Models"
+author:
+  - "Gianluca Romeo"
+  - "Matteo Cagno"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    theme: cosmo
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+# CCA Computational Economics Replication Project
+
+Replication and extension of:
+
+> Schmitt-Grohé, S. and Uribe, M. (2003),  
+> *Closing Small Open Economy Models*,  
+> Journal of International Economics, 61, 163–185.
+
+## Authors
+
+**Gianluca Romeo**  
+Collegio Carlo Alberto  
+
+**Matteo Cagno**  
+Collegio Carlo Alberto  
+
+## Note
+
+This report was created as part of the assessment for the Computational Economics course at Collegio Carlo Alberto.
+
+# Paper and Replication Package
+
+This project replicates the small open economy models studied in Schmitt-Grohé and Uribe (2003).
+
+The implementation of Models 1–4 is based on the Dynare replication code by Johannes Pfeifer:
+
+<https://github.com/JohannesPfeifer/DSGE_mod/tree/master/SGU_2003>
+
+We reproduce:
+
+1. impulse response functions for Models 1–4;
+2. second moments for Models 1–4;
+3. an extension for Model 5 using a nonlinear perfect-foresight solver.
+
+# High-Level Description of the Computational Problem
+
+Schmitt-Grohé and Uribe (2003) study alternative ways to close small open economy models. Without a closure device, the net foreign asset position is generally non-stationary.
+
+Models 1–4 introduce different closure mechanisms:
+
+1. endogenous discount factor;
+2. debt-elastic interest rate premium;
+3. portfolio adjustment costs;
+4. complete markets.
+
+Model 5 is the non-stationary benchmark. Since it does not include a closure device, we solve it manually in Julia using a perfect-foresight method and compare different terminal conditions for foreign debt.
+
+# Computational Requirements
+
+The replication is implemented in Julia.
+
+Main Julia packages used:
+
+- `MacroModelling.jl`
+- `Plots.jl`
+- `DataFrames.jl`
+- `CSV.jl`
+- `NLsolve.jl`
+- `Parameters.jl`
+
+# Our Computational Setup
+
+The computations were run on a local machine using Julia and the project environment specified in `Project.toml` and `Manifest.toml`.
+
+To reproduce the project:
+
+```julia
+using Pkg
+Pkg.activate(".")
+Pkg.instantiate()
+```
+
+Then run:
+
+```bash
+julia run.jl
+```
+
+# Replication Results
+
+## Models 1–4
+
+For Models 1–4, we reproduce the main impulse response functions and second moments using `MacroModelling.jl`.
+
+The generated output is saved in:
+
+```text
+output/figures/
+output/tables/
+```
+
+## Model 5 Extension
+
+Model 5 is non-stationary because there is no mechanism that pins down the long-run level of foreign debt.
+
+We solve Model 5 using a nonlinear perfect-foresight method. Since the model is non-stationary, the solution depends on the terminal condition imposed on debt or marginal utility.
+
+We compare three terminal conditions:
+
+1. zero terminal debt drift: $begin:math:text$d\_T \= d\_\{T\-1\}$end:math:text$;
+2. debt forced back to steady state: $begin:math:text$d\_T \= \\bar d$end:math:text$;
+3. capital and marginal utility returned to steady state: $begin:math:text$k\_\{T\+1\}\=k\^\{ss\}$end:math:text$, $begin:math:text$\\lambda\_T\=\\lambda\^\{ss\}$end:math:text$.
+
+# Figures
+
+## Model 5 Perfect-Foresight IRFs
+
+Place the figure in:
+
+```text
+images/model5_pf_irfs.png
+```
+
+Then it appears here:
+
+![](images/model5_pf_irfs.png)
+
+# Discussion
+
+The terminal condition has limited effects on real variables such as output, hours, and investment, which are mainly driven by the productivity shock and intratemporal optimality conditions.
+
+The effects are stronger for consumption, the trade balance, the current account, and foreign debt, because these variables are directly linked to the intertemporal allocation of resources and the non-stationary foreign asset position.
+
+This illustrates the key lesson of Schmitt-Grohé and Uribe (2003): small open economy models require a closure device to obtain stationary dynamics.
+
+# Conclusion
+
+The project successfully replicates Models 1–4 and extends the analysis of Model 5 by showing how alternative terminal conditions affect perfect-foresight transition dynamics in a non-stationary small open economy model.

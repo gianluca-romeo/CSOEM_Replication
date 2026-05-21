@@ -127,20 +127,16 @@ The comparison highlights how terminal conditions mainly affect intertemporal va
 
 The project was developed and executed locally using both Julia and Dynare.
 
-The replication of Models 1 to 4 was implemented in Julia using the `MacroModelling.jl` package, while the original Dynare replication files by Johannes Pfeifer were used as a benchmark to validate impulse response functions, calibrations, and moment computations.
+The computations were performed on the following systems:
 
-Model 5 was implemented entirely in Julia and solved under perfect foresight using nonlinear root-finding methods provided by `NLsolve.jl`.
+- Mac Laptop M2 MacBook Air, MacOS 15.6.1, 8 GB of memory, (M2 Processor, 8 cores)
+- Mac Laptop M4 MacBook Air, MacOS 15.7.7, 16 GB of memory, (M4 Processor, 10 cores)
 
-The computations were run on:
-
-- Apple MacBook Air
-- Apple Silicon M2 and M4 architectures
-- macOS environment
 
 The main software and packages used in the project are:
 
-- Julia
 - Dynare
+- Julia
 - MacroModelling.jl
 - NLsolve.jl
 - DataFrames.jl
@@ -148,7 +144,6 @@ The main software and packages used in the project are:
 - Plots.jl
 
 All package versions and dependencies are fully documented in the `Project.toml` and `Manifest.toml` files included in the repository, ensuring computational reproducibility.
-# Replication Results
 
 # Results
 
@@ -158,13 +153,13 @@ For Models 1–4, we reproduce the main impulse response functions and second mo
 
 ### Original IRFs in the paper
 
-![](figures/SGU_original_irfs.png)
+![](figures/SGU_original_irfs.png){width=600px}
 
 Note. Solid line: Endogenous discount factor model; Squares: Endogenous discount factor model without internalization; Dashed line: Debt-elastic interest rate model; Dash-dotted line: Portfolio adjustment cost model; Dotted line: complete asset markets model; Circles: Model without stationarity inducing elements.
 
 ### Our extimated IRFs
 
-![](figures/selected_models_irfs.png)
+![](figures/selected_models_irfs.png){width=600px}
 
 ### Table of moments in the original paper
 
@@ -220,77 +215,15 @@ Note. Solid line: Endogenous discount factor model; Squares: Endogenous discount
 
 ## Model 5: Extension
 
-Unlike Models 1 to 4, Model 5 does not include a mechanism that induces stationarity in foreign debt dynamics. As a result, the model cannot be solved using standard local perturbation methods around a unique stochastic steady state.
+### Estimated IRFs
 
-To study the dynamics of the economy after a productivity shock, we instead solve the model under perfect foresight over a finite horizon.
+![](figures/model5_pf_irfs.png){width=600px}
 
-### Perfect Foresight Setup
+### Comment
+The impulse responses of Model 5  are defined under three different terminal conditions used to close the finite-horizon perfect-foresight problem: leaving terminal debt free, forcing debt back to its steady-state value, and pinning terminal marginal utility to its steady-state level.
 
-The economy is initialized at the deterministic steady state and is hit by a temporary productivity shock of the form:
+The short-run responses of output, investment, and hours are almost identical across the three cases, since they are mainly driven by the common technology shock and the production side of the model. The differences are more visible for consumption, the trade balance, and the current account.
 
-$$
-a_t = \rho a_{t-1} + \sigma \varepsilon_t
-$$
+This is the key point of the non-stationary benchmark. Since Model 5 does not include a debt-elastic interest rate, portfolio adjustment costs, or any other stationarity-inducing mechanism, foreign debt is not forced to return to its steady-state level. As a result, the computed transition path depends on how the finite-horizon problem is closed.
 
-Under perfect foresight, agents are assumed to know the entire future path of the shock and choose consumption, investment, labor, and borrowing optimally over the transition.
-
-The equilibrium dynamics are characterized by a nonlinear system including:
-
-- the resource constraint,
-
-$$
-c_t + i_t + d_t = y_t + (1+r)d_{t-1}
-$$
-
-- the capital accumulation equation,
-
-$$
-k_{t+1} = (1-\delta)k_t + i_t
-$$
-
-- and the Euler equation,
-
-$$
-\lambda_t = \beta (1+r)\lambda_{t+1}
-$$
-
-together with the remaining equilibrium conditions of the model.
-
-### Numerical Solution
-
-The transition path is solved over a finite horizon $T$. All equilibrium conditions for every period are stacked into a large nonlinear system.
-
-The unknown variables include the full paths of:
-
-- consumption;
-- investment;
-- capital;
-- labor;
-- foreign debt;
-- marginal utility.
-
-The nonlinear system is solved numerically using the `NLsolve.jl` package.
-
-### Terminal Conditions
-
-Since Model 5 is non-stationary, the finite-horizon solution depends on the terminal condition imposed at the end of the simulation horizon.
-
-We compare three alternative terminal assumptions:
-
-1. **Free terminal debt drift**
-
-$$
-d_T = d_{T-1}
-$$
-
-2. **Debt converges to steady state**
-
-$$
-d_T = \bar d
-$$
-
-3. **Capital and marginal utility converge to steady state**
-
-$$
-k_{T+1} = k^{ss}, \qquad \lambda_T = \lambda^{ss}
-$$
+Hence, for the non-stationary model, impulse responses are not completely independent of the chosen terminal condition. The computational closure affects the economic interpretation of the adjustment dynamics.

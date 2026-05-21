@@ -42,6 +42,9 @@ CSOEM_Replication/
 ├── run.jl                     # Main execution script
 ├── Project.toml               # Project dependencies
 ├── Manifest.toml              # Reproducible package versions
+├── report.qmd                 # Online report
+├── figures/                   # Folder with images for the report
+│
 └── README.md
 ```
 

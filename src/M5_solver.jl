@@ -12,10 +12,6 @@ function model5_pf_quantities(
     p::SGUParams
 )
 
-    if c <= 0 || k <= 0 || k_next <= 0 || A <= 0
-        return nothing
-    end
-
     # Eq. (26) in Dynare: intratemporal labor FOC.
     # The labor condition is solved analytically for h_t
     # after substituting out marginal utility λ_t.
@@ -57,10 +53,6 @@ function model5_pf_quantities(
     # i_t = k_{t+1} - (1-δ)k_t
     # ---------------------------------------------------------
     i = k_next - (1 - p.δ) * k
-
-    if h <= 0 || y <= 0 || i <= 0
-        return nothing
-    end
 
     # Capital adjustment costs appearing in:
     # - Eq. (4): debt accumulation
@@ -185,11 +177,6 @@ function solve_model5_pf(;
                 p
             )
 
-            if q_t === nothing
-                F[t] = 1e6
-                continue
-            end
-
             # Compute residuals, considering the Eq. (4) in Dynare:
             # d = (1+exp(r(-1)))*d(-1)- exp(y)+exp(c)+exp(i)+(phi/2)*(exp(k)-exp(k(-1)))^2
             # ---------------------------------------------------------
@@ -234,11 +221,6 @@ function solve_model5_pf(;
                 p
             )
 
-            if q_t === nothing || q_next === nothing
-                F[offset_bond + t] = 1e6
-                continue
-            end
-
             # Eq. (24) Euler equation in Dynare:
             # exp(lambda)= beta*(1+exp(r))*exp(lambda(+1)); 
             # Compute residuals
@@ -275,11 +257,6 @@ function solve_model5_pf(;
                 A_path[t + 1],
                 p
             )
-
-            if q_t === nothing || q_next === nothing
-                F[offset_bond + t] = 1e6
-                continue
-            end
 
             mpk_next =
                 A_path[t + 1] *
@@ -338,13 +315,7 @@ function solve_model5_pf(;
                 A_path[T],
                 p
             )
-
-            if q_T === nothing
-                F[terminal_2_index] = 1e6
-            else
-                F[terminal_2_index] = q_T.λ - ss.λ
-            end
-
+            
             F[terminal_2_index] = q_T.λ - ss.λ
 
         end

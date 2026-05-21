@@ -47,44 +47,81 @@ The implementation is partly based on the Dynare replication files provided by J
 
 # High Level Description of Computational Problem in Paper
 
-The paper studies alternative methods for closing small open economy models in the presence of incomplete international financial markets. The main computational task consists of solving and simulating a set of dynamic stochastic general equilibrium (DSGE) models under different assumptions regarding the stationarity-inducing mechanism for foreign debt.
+## Models 1–4
 
-For Models 1 to 4, the paper analyzes stochastic small open economy models subject to productivity shocks:
+The paper studies small open economy DSGE models under different assumptions regarding the mechanism used to induce stationarity in foreign debt dynamics.
+
+For Models 1 to 4, the economy is subject to stochastic productivity shocks of the form:
 
 $$
 a_t = \rho a_{t-1} + \sigma \varepsilon_t
 $$
 
-where $a_t$ denotes total factor productivity and $\varepsilon_t \sim \mathcal{N}(0,1)$.
+where $begin:math:text$a\_t$end:math:text$ denotes total factor productivity and $begin:math:text$\\varepsilon\_t \\sim \\mathcal\{N\}\(0\,1\)$end:math:text$.
 
-The representative household solves an intertemporal optimization problem with standard Euler equations of the form:
+Households solve an intertemporal optimization problem subject to a budget constraint and capital accumulation dynamics. The equilibrium conditions include Euler equations such as:
 
 $$
 \lambda_t = \beta (1+r_t)\mathbb{E}_t[\lambda_{t+1}]
 $$
 
-combined with intratemporal optimality conditions for labor supply and capital accumulation.
+together with labor supply conditions and the resource constraint of the economy.
 
-The computational problem for these models involves:
+From a computational perspective, the problem consists of:
 
 - computing the deterministic steady state;
-- obtaining a first-order perturbation approximation around the steady state;
-- solving the resulting linear rational expectations system;
-- simulating the model dynamics;
-- generating impulse response functions (IRFs);
-- computing unconditional second moments such as standard deviations, correlations, and autocorrelations.
+- linearizing the equilibrium conditions around steady state;
+- solving the resulting rational expectations system;
+- simulating the model after a productivity shock;
+- computing impulse response functions and unconditional second moments.
 
-In our replication, Models 1 to 4 are implemented in Julia using the `MacroModelling.jl` package, which provides symbolic model parsing, automatic differentiation, perturbation-based solution methods, and simulation tools for DSGE models. The implementation reproduces the calibration and normalization conventions used in the original Dynare replication files by Johannes Pfeifer.
+In our replication, Models 1 to 4 are implemented in Julia using the `MacroModelling.jl` package. The package symbolically parses the DSGE system and computes a first-order perturbation approximation around the steady state. The resulting linearized model is then used to generate impulse response functions and simulated moments.
 
-The extension developed in this project concerns Model 5, which is solved under perfect foresight rather than perturbation methods. In this case, the computational problem becomes a nonlinear transition-path problem over a finite horizon. The economy is initialized with a temporary productivity shock, and the entire transition path is solved simultaneously subject to equilibrium conditions and terminal restrictions. 
+The implementation closely follows the Dynare replication files by Johannes Pfeifer, which were used as a benchmark for calibration choices, shock normalization, and quantitative validation of the results.
 
-Different terminal conditions are imposed to close the finite-horizon problem, including:
+## Model 5: Perfect Foresight Computation
 
-- free terminal debt drift;
-- convergence of debt toward its steady-state value;
-- convergence of shadow prices and capital toward steady state.
+Unlike the previous models, Model 5 does not include a mechanism that induces stationarity in foreign debt. As a result, standard perturbation methods around a unique stochastic steady state are not appropriate.
 
-The nonlinear system is solved numerically using `NLsolve.jl`. After computing the transition paths, we generate perfect-foresight impulse response functions and compare how alternative terminal conditions affect the dynamics of consumption, external balances, and debt accumulation.
+To study the dynamics of the economy after a productivity shock, we instead solve the model under perfect foresight over a finite horizon.
+
+The economy is initialized at the deterministic steady state and agents are assumed to perfectly anticipate the future path of the economy after the shock realization. The equilibrium dynamics are described by a nonlinear system including equations such as:
+
+$$
+c_t + i_t + d_t = y_t + (1+r)d_{t-1}
+$$
+
+and the capital accumulation equation:
+
+$$
+k_{t+1} = (1-\delta)k_t + i_t
+$$
+
+The transition path is solved simultaneously over all periods of the simulation horizon. In practice, the unknown paths of consumption, investment, capital, labor, debt, and marginal utility are stacked into a large nonlinear system.
+
+The nonlinear system is solved numerically using the `NLsolve.jl` package.
+
+Since Model 5 is non-stationary, the finite-horizon solution depends on the terminal condition imposed at the end of the simulation. We compare three alternative terminal conditions:
+
+1. free terminal debt drift;
+
+$$
+d_T = d_{T-1}
+$$
+
+2. debt converging to steady state;
+
+$$
+d_T = \bar d
+$$
+
+3. convergence of capital and marginal utility to steady state;
+
+$$
+k_{T+1} = k^{ss}, \qquad \lambda_T = \lambda^{ss}
+$$
+
+The comparison highlights how terminal conditions mainly affect intertemporal variables such as debt dynamics, consumption, and the current account, while real variables such as output and hours remain relatively similar across specifications.
 
 # Our Computational Setup
 
@@ -113,7 +150,7 @@ The main software and packages used in the project are:
 All package versions and dependencies are fully documented in the `Project.toml` and `Manifest.toml` files included in the repository, ensuring computational reproducibility.
 # Replication Results
 
-# Replication
+# Results
 
 ## Models 1–4
 
@@ -128,28 +165,79 @@ Our extimated irfs:
 ![](figures/selected_models_irfs.png)
 
 
-## Model 5 Extension
+## Model 5: Perfect Foresight Solution
 
-Model 5 is non-stationary because there is no mechanism that pins down the long-run level of foreign debt.
+Unlike Models 1 to 4, Model 5 does not include a mechanism that induces stationarity in foreign debt dynamics. As a result, the model cannot be solved using standard local perturbation methods around a unique stochastic steady state.
 
-We solve Model 5 using a nonlinear perfect-foresight method. Since the model is non-stationary, the solution depends on the terminal condition imposed on debt or marginal utility.
+To study the dynamics of the economy after a productivity shock, we instead solve the model under perfect foresight over a finite horizon.
 
-We compare three terminal conditions:
+### Perfect Foresight Setup
 
-1. zero terminal debt drift: $d_T = d_{T-1}$;
-2. debt forced back to steady state: $d_T = \bar d$;
-3. capital and marginal utility returned to steady state: $k_{T+1}=k^{ss}$, $\lambda_T=\lambda^{ss}$.
+The economy is initialized at the deterministic steady state and is hit by a temporary productivity shock of the form:
 
-# Figures
+$$
+a_t = \rho a_{t-1} + \sigma \varepsilon_t
+$$
 
-## Model 5 Perfect-Foresight IRFs
+Under perfect foresight, agents are assumed to know the entire future path of the shock and choose consumption, investment, labor, and borrowing optimally over the transition.
 
-Place the figure in:
+The equilibrium dynamics are characterized by a nonlinear system including:
 
-```text
-images/model5_pf_irfs.png
-```
+- the resource constraint,
 
-Then it appears here:
+$$
+c_t + i_t + d_t = y_t + (1+r)d_{t-1}
+$$
 
-![](figures/model5_pf_irfs.png)
+- the capital accumulation equation,
+
+$$
+k_{t+1} = (1-\delta)k_t + i_t
+$$
+
+- and the Euler equation,
+
+$$
+\lambda_t = \beta (1+r)\lambda_{t+1}
+$$
+
+together with the remaining equilibrium conditions of the model.
+
+### Numerical Solution
+
+The transition path is solved over a finite horizon $T$. All equilibrium conditions for every period are stacked into a large nonlinear system.
+
+The unknown variables include the full paths of:
+
+- consumption;
+- investment;
+- capital;
+- labor;
+- foreign debt;
+- marginal utility.
+
+The nonlinear system is solved numerically using the `NLsolve.jl` package.
+
+### Terminal Conditions
+
+Since Model 5 is non-stationary, the finite-horizon solution depends on the terminal condition imposed at the end of the simulation horizon.
+
+We compare three alternative terminal assumptions:
+
+1. **Free terminal debt drift**
+
+$$
+d_T = d_{T-1}
+$$
+
+2. **Debt converges to steady state**
+
+$$
+d_T = \bar d
+$$
+
+3. **Capital and marginal utility converge to steady state**
+
+$$
+k_{T+1} = k^{ss}, \qquad \lambda_T = \lambda^{ss}
+$$

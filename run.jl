@@ -35,6 +35,8 @@ active_models = Dict(
     "M4"  => 1
 )
 
+run_model5 = 1
+
 output_dir = joinpath(@__DIR__, "output")
 
 run_sgu_irfs(
@@ -59,8 +61,10 @@ run_moment_table(active_models; output_dir = output_dir)
 #
 # Examples:
 # shock_std = 0.01 / sigma_tfp  -> reproduces Dynare normalized IRF (a_1 = 0.01)
-M5_plot_irfs(
-    horizon = 40,
-    shock_std = 0.01 / 0.0129,
-    output_dir = output_dir
-)
+if run_model5 == 1
+    M5_plot_irfs(
+        horizon = 10,
+        shock_std = 0.01 / 0.0129,
+        output_dir = output_dir
+    )
+end

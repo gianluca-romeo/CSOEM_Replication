@@ -160,6 +160,8 @@ For Models 1–4, we reproduce the main impulse response functions and second mo
 
 ![](figures/SGU_original_irfs.png)
 
+Note. Solid line: Endogenous discount factor model; Squares: Endogenous discount factor model without internalization; Dashed line: Debt-elastic interest rate model; Dash-dotted line: Portfolio adjustment cost model; Dotted line: complete asset markets model; Circles: Model without stationarity inducing elements.
+
 ### Our extimated IRFs
 
 ![](figures/selected_models_irfs.png)

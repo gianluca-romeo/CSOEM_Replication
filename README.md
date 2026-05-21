@@ -75,6 +75,22 @@ From the terminal, inside the project directory:
 julia run.jl
 ```
 
+The `run.jl` script allows the user to choose which models to run by modifying the `active_models` dictionary inside the file.
+
+For example:
+
+```julia
+active_models = Dict(
+    "M1"  => 1,
+    "M1a" => 0,
+    "M2"  => 0,
+    "M3"  => 0,
+    "M4"  => 0
+)
+```
+
+A value equal to `1` activates the model, while `0` skips it.
+
 ---
 
 ## Tests

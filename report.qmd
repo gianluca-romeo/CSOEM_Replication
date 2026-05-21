@@ -49,23 +49,31 @@ The implementation is partly based on the Dynare replication files provided by J
 
 ## Models 1–4
 
-The paper studies small open economy DSGE models under different assumptions regarding the mechanism used to induce stationarity in foreign debt dynamics.
+The first four models in Schmitt-Grohé and Uribe (2003) study alternative methods for inducing stationarity in small open economy models with incomplete international financial markets.
 
-For Models 1 to 4, the economy is subject to stochastic productivity shocks of the form:
+All models share the same core RBC structure and are subject to stochastic productivity shocks:
 
 $$
 a_t = \rho a_{t-1} + \sigma \varepsilon_t
 $$
 
-where $begin:math:text$a\_t$end:math:text$ denotes total factor productivity and $begin:math:text$\\varepsilon\_t \\sim \\mathcal\{N\}\(0\,1\)$end:math:text$.
+where $a\_t$ denotes total factor productivity and $\varepsilon_t \sim \mathcal{N}(0,1)$.
 
-Households solve an intertemporal optimization problem subject to a budget constraint and capital accumulation dynamics. The equilibrium conditions include Euler equations such as:
+The models mainly differ in the mechanism used to stabilize foreign debt dynamics:
+
+- **Model 1:** endogenous country risk premium;
+- **Model 1a:** endogenous discount factor;
+- **Model 2:** debt-elastic interest rate premium;
+- **Model 3:** portfolio adjustment costs;
+- **Model 4:** complete asset markets benchmark.
+
+Households solve a standard intertemporal optimization problem subject to budget and capital accumulation constraints. The equilibrium conditions include Euler equations such as:
 
 $$
 \lambda_t = \beta (1+r_t)\mathbb{E}_t[\lambda_{t+1}]
 $$
 
-together with labor supply conditions and the resource constraint of the economy.
+together with labor supply conditions and aggregate resource constraints.
 
 From a computational perspective, the problem consists of:
 
@@ -77,7 +85,7 @@ From a computational perspective, the problem consists of:
 
 In our replication, Models 1 to 4 are implemented in Julia using the `MacroModelling.jl` package. The package symbolically parses the DSGE system and computes a first-order perturbation approximation around the steady state. The resulting linearized model is then used to generate impulse response functions and simulated moments.
 
-The implementation closely follows the Dynare replication files by Johannes Pfeifer, which were used as a benchmark for calibration choices, shock normalization, and quantitative validation of the results.
+The implementation closely follows the Dynare replication files by Johannes Pfeifer, which were used as a benchmark for calibration choices and shock normalization.
 
 ## Model 5: Perfect Foresight Computation
 
@@ -153,13 +161,17 @@ For Models 1–4, we reproduce the main impulse response functions and second mo
 
 ### Original IRFs in the paper
 
+::: {.text-center}
 ![](figures/SGU_original_irfs.png){width=600px}
+:::
 
 Note. Solid line: Endogenous discount factor model; Squares: Endogenous discount factor model without internalization; Dashed line: Debt-elastic interest rate model; Dash-dotted line: Portfolio adjustment cost model; Dotted line: complete asset markets model; Circles: Model without stationarity inducing elements.
 
 ### Our extimated IRFs
 
+::: {.text-center}
 ![](figures/selected_models_irfs.png){width=600px}
+:::
 
 ### Table of moments in the original paper
 
@@ -217,11 +229,11 @@ Note. Solid line: Endogenous discount factor model; Squares: Endogenous discount
 
 ### Estimated IRFs
 
+::: {.text-center}
 ![](figures/model5_pf_irfs.png){width=600px}
+:::
 
 ### Comment
-The impulse responses of Model 5  are defined under three different terminal conditions used to close the finite-horizon perfect-foresight problem: leaving terminal debt free, forcing debt back to its steady-state value, and pinning terminal marginal utility to its steady-state level.
-
 The short-run responses of output, investment, and hours are almost identical across the three cases, since they are mainly driven by the common technology shock and the production side of the model. The differences are more visible for consumption, the trade balance, and the current account.
 
 This is the key point of the non-stationary benchmark. Since Model 5 does not include a debt-elastic interest rate, portfolio adjustment costs, or any other stationarity-inducing mechanism, foreign debt is not forced to return to its steady-state level. As a result, the computed transition path depends on how the finite-horizon problem is closed.

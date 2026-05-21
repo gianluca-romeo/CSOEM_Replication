@@ -121,7 +121,7 @@ function M5_plot_irfs(;
     fig_path = joinpath(figures_dir, "model5_pf_irfs.png")
     savefig(fig, fig_path)
 
-    println("Saved comparison figure:")
+    println("M5 IRFs in:")
     println("  ", fig_path)
 
 end

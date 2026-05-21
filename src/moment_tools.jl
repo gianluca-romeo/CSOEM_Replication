@@ -112,7 +112,7 @@ function run_moment_table(active_models; output_dir)
 
         for r in 2:length(table)
             x = values[r - 1]
-            push!(table[r], isnan(x) ? "" : string(round(x; digits = 1)))
+            push!(table[r], isnan(x) ? "" : string(round(x; digits = 2)))
         end
     end
 
@@ -123,5 +123,8 @@ function run_moment_table(active_models; output_dir)
             println(io, join(row, ","))
         end
     end
+
+    println("Selected models moments in:")
+    println("  ", csv_path)
 
 end

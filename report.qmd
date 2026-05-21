@@ -136,9 +136,9 @@ We solve Model 5 using a nonlinear perfect-foresight method. Since the model is 
 
 We compare three terminal conditions:
 
-1. zero terminal debt drift: $begin:math:text$d\_T \= d\_\{T\-1\}$end:math:text$;
-2. debt forced back to steady state: $begin:math:text$d\_T \= \\bar d$end:math:text$;
-3. capital and marginal utility returned to steady state: $begin:math:text$k\_\{T\+1\}\=k\^\{ss\}$end:math:text$, $begin:math:text$\\lambda\_T\=\\lambda\^\{ss\}$end:math:text$.
+1. zero terminal debt drift: $d_T = d_{T-1}$;
+2. debt forced back to steady state: $d_T = \bar d$;
+3. capital and marginal utility returned to steady state: $k_{T+1}=k^{ss}$, $\lambda_T=\lambda^{ss}$.
 
 # Figures
 
@@ -153,15 +153,3 @@ images/model5_pf_irfs.png
 Then it appears here:
 
 ![](figures/model5_pf_irfs.png)
-
-# Discussion
-
-The terminal condition has limited effects on real variables such as output, hours, and investment, which are mainly driven by the productivity shock and intratemporal optimality conditions.
-
-The effects are stronger for consumption, the trade balance, the current account, and foreign debt, because these variables are directly linked to the intertemporal allocation of resources and the non-stationary foreign asset position.
-
-This illustrates the key lesson of Schmitt-Grohé and Uribe (2003): small open economy models require a closure device to obtain stationary dynamics.
-
-# Conclusion
-
-The project successfully replicates Models 1–4 and extends the analysis of Model 5 by showing how alternative terminal conditions affect perfect-foresight transition dynamics in a non-stationary small open economy model.

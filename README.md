@@ -104,8 +104,19 @@ run_model5 = 1
 Open Julia in the project directory and run:
 
 ```julia
-include("test/runtests.jl")
+using Pkg
+Pkg.activate(".")
+Pkg.test()
 ```
+
+The test suite checks:
+
+- basic functionality for Models 1–4;
+- steady-state computation;
+- impulse response generation;
+- moment table output;
+- Model 5 steady-state computation;
+- Model 5 perfect-foresight solver output.
 
 ---
 

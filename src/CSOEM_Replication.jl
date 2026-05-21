@@ -1,3 +1,5 @@
+__precompile__(false)
+
 module CSOEM_Replication
 
 using MacroModelling

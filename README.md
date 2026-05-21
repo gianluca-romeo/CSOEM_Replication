@@ -13,6 +13,11 @@ https://github.com/JohannesPfeifer/DSGE_mod/tree/master/SGU_2003
 
 In addition, the project extends the analysis of Model 5 by implementing a nonlinear perfect-foresight solver in Julia and comparing alternative terminal conditions for foreign debt dynamics.
 
+### Report
+
+The report of the replication project is available online at:
+https://gianluca-romeo.github.io/CSOEM_Replication/
+
 ---
 
 ## Project Structure

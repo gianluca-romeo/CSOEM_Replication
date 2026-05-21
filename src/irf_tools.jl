@@ -2,6 +2,7 @@
 # IRF generation and plotting utilities for Models 1 to 4.
 # =========================================================
 
+# Collect models from 1 to 4.
 function get_model_dictionary()
     return Dict(
         "M1"  => SGU_M1,
@@ -12,6 +13,7 @@ function get_model_dictionary()
     )
 end
 
+# Styles
 function get_style_dictionary()
     return Dict(
         "M1"  => (:solid, :circle),
@@ -22,10 +24,11 @@ function get_style_dictionary()
     )
 end
 
-function run_sgu_irfs(active_models;
+# Compute and plot impulse responses 
+function run_sgu_irfs(active_models;       
     output_dir,
     periods = 10,
-    shock_size = 1 / 0.0129
+    shock_size = 1 / 0.0129 # 1/σ_ϵ 
 )
 
     figures_dir = joinpath(output_dir, "figures")
@@ -34,7 +37,7 @@ function run_sgu_irfs(active_models;
     all_models = get_model_dictionary()
     styles = get_style_dictionary()
 
-    # Filter only selected models passed in input
+    # Filter only selected models.
     selected_models = Dict(
         name => all_models[name]
         for (name, active) in active_models
@@ -53,7 +56,7 @@ function run_sgu_irfs(active_models;
     )
 
     # Figure: 3 rows and 2 columns
-    p = plot(layout = (3, 2), size = (1000, 750), legend = :topright)
+    p = plot(layout = (3, 2), size = (1000, 750), legend = :topright) # Six IRFs.
 
     # For each variable
     for (panel, v) in enumerate(vars)
@@ -77,6 +80,7 @@ function run_sgu_irfs(active_models;
             
             irf_mat = dropdims(irf, dims = 3)
 
+            # Convert the output into a one-dimensional series.
             series = size(irf_mat, 1) == 1 ?
                 vec(irf_mat[1, :]) :
                 vec(irf_mat[:, 1])
@@ -97,6 +101,7 @@ function run_sgu_irfs(active_models;
             )
         end
 
+        # Zero line
         hline!(
             p[panel],
             [0],
@@ -109,7 +114,7 @@ function run_sgu_irfs(active_models;
 
     display(p)
 
-    path = joinpath(figures_dir, "selected_models_irfs.png")
+    path = joinpath(figures_dir, "selected_models_irfs.png") # Save
     savefig(p, path)
 
     return p

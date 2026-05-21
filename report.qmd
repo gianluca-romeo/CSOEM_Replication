@@ -113,16 +113,20 @@ The main software and packages used in the project are:
 All package versions and dependencies are fully documented in the `Project.toml` and `Manifest.toml` files included in the repository, ensuring computational reproducibility.
 # Replication Results
 
+# Replication
+
 ## Models 1–4
 
 For Models 1–4, we reproduce the main impulse response functions and second moments using `MacroModelling.jl`.
 
-The generated output is saved in:
+Original irfs in the paper
 
-```text
-output/figures/
-output/tables/
-```
+![](figures/SGU_original_irfs.png)
+
+Our extimated irfs:
+
+![](figures/selected_models_irfs.png)
+
 
 ## Model 5 Extension
 
@@ -148,7 +152,7 @@ images/model5_pf_irfs.png
 
 Then it appears here:
 
-![](images/model5_pf_irfs.png)
+![](figures/model5_pf_irfs.png)
 
 # Discussion
 

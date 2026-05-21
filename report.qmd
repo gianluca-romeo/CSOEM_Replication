@@ -55,7 +55,7 @@ $$
 a_t = \rho a_{t-1} + \sigma \varepsilon_t
 $$
 
-where $a\_t$ denotes total factor productivity and $\varepsilon_t \sim \mathcal{N}(0,1)$.
+where $a_t$ denotes total factor productivity and $\varepsilon_t \sim \mathcal{N}(0,1)$.
 
 The representative household solves an intertemporal optimization problem with standard Euler equations of the form:
 

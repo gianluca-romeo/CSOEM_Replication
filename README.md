@@ -111,12 +111,9 @@ Pkg.test()
 
 The test suite checks:
 
-- basic functionality for Models 1–4;
-- steady-state computation;
-- impulse response generation;
-- moment table output;
-- Model 5 steady-state computation;
-- Model 5 perfect-foresight solver output.
+- Models 1–4 functionality and IRFs;
+- moment table generation;
+- Model 5 steady state and perfect-foresight solver output.
 
 ---
 

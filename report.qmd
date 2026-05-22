@@ -33,6 +33,7 @@ This project replicates the results of:
 > Schmitt-Grohé, S. and Uribe, M. (2003),  
 > *Closing Small Open Economy Models*,  
 > Journal of International Economics, 61, 163–185.
+> <https://www.sciencedirect.com/science/article/abs/pii/S0022199602000569>
 
 The paper studies alternative methods for closing small open economy models and compares their quantitative implications for business cycle dynamics and second moments.
 

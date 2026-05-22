@@ -5,6 +5,7 @@ Replication and extension of the models in:
 > Schmitt-Grohé, S. and Uribe, M. (2003),  
 > *Closing Small Open Economy Models*,  
 > Journal of International Economics, 61, 163–185.
+> <https://www.sciencedirect.com/science/article/abs/pii/S0022199602000569>
 
 The project reproduces impulse response functions and second moments for the small open economy models presented in Schmitt-Grohé and Uribe (2003), using Julia.
 

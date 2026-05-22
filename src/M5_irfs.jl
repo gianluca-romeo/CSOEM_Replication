@@ -9,9 +9,6 @@ function M5_plot_irfs(;
     output_dir::String = "output"
 )
 
-    println("Running Model 5 perfect-foresight experiment")
-    println("Terminal conditions: free_debt, debt_to_dbar, lambda_k_to_ss")
-
     # tables_dir = joinpath(output_dir, "tables")
     figures_dir = joinpath(output_dir, "figures")
 
@@ -54,69 +51,145 @@ function M5_plot_irfs(;
         df_free.period,
         df_free.output,
         label = "free debt",
+        linewidth = 2,
         title = "Output",
-        xlabel = "Period"
+        xlabel = "Period",
+        linestyle = :solid,
+        marker = :circle,
+        markersize = 4
     )
-    plot!(p1, df_dbar.period, df_dbar.output, label = "d_T = dbar")
-    plot!(p1, df_lambda.period, df_lambda.output, label = "lambda_T = lambda_ss")
+    plot!(p1, df_dbar.period, df_dbar.output, label = "d_T = dbar", linewidth = 2, linestyle = :dash, marker = :diamond, markersize = 4)
+    plot!(p1, df_lambda.period, df_lambda.output, label = "lambda_T = lambda_ss", linewidth = 2, linestyle = :dot, marker = :square, markersize = 4)
+
+    hline!(
+    p1,
+    [0],
+    color = :black,
+    linestyle = :dash,
+    linewidth = 1,
+    label = ""
+    )
 
     p2 = plot(
         df_free.period,
         df_free.consumption,
         label = "free debt",
+        linewidth = 2,
         title = "Consumption",
-        xlabel = "Period"
+        xlabel = "Period",
+        linestyle = :solid,
+        marker = :circle,
+        markersize = 4
     )
-    plot!(p2, df_dbar.period, df_dbar.consumption, label = "d_T = dbar")
-    plot!(p2, df_lambda.period, df_lambda.consumption, label = "lambda_T = lambda_ss")
+    plot!(p2, df_dbar.period, df_dbar.consumption, label = "d_T = dbar", linewidth = 2, linestyle = :dash, marker = :diamond, markersize = 4)
+    plot!(p2, df_lambda.period, df_lambda.consumption, label = "lambda_T = lambda_ss", linewidth = 2, linestyle = :dot, marker = :square, markersize = 4)
+
+    hline!(
+    p2,
+    [0],
+    color = :black,
+    linestyle = :dash,
+    linewidth = 1,
+    label = ""
+    )
 
     p3 = plot(
         df_free.period,
         df_free.investment,
         label = "free debt",
+        linewidth = 2,
         title = "Investment",
-        xlabel = "Period"
+        xlabel = "Period",
+        linestyle = :solid,
+        marker = :circle,
+        markersize = 4
     )
-    plot!(p3, df_dbar.period, df_dbar.investment, label = "d_T = dbar")
-    plot!(p3, df_lambda.period, df_lambda.investment, label = "lambda_T = lambda_ss")
+    plot!(p3, df_dbar.period, df_dbar.investment, label = "d_T = dbar", linewidth = 2, linestyle = :dash, marker = :diamond, markersize = 4)
+    plot!(p3, df_lambda.period, df_lambda.investment, label = "lambda_T = lambda_ss", linewidth = 2, linestyle = :dot, marker = :square, markersize = 4)
+
+    hline!(
+    p3,
+    [0],
+    color = :black,
+    linestyle = :dash,
+    linewidth = 1,
+    label = ""
+    )
 
     p4 = plot(
         df_free.period,
         df_free.hours,
         label = "free debt",
+        linewidth = 2,
         title = "Hours",
-        xlabel = "Period"
+        xlabel = "Period",
+        linestyle = :solid,
+        marker = :circle,
+        markersize = 4
     )
-    plot!(p4, df_dbar.period, df_dbar.hours, label = "d_T = dbar")
-    plot!(p4, df_lambda.period, df_lambda.hours, label = "lambda_T = lambda_ss")
+    plot!(p4, df_dbar.period, df_dbar.hours, label = "d_T = dbar", linewidth = 2, linestyle = :dash, marker = :diamond, markersize = 4)
+    plot!(p4, df_lambda.period, df_lambda.hours, label = "lambda_T = lambda_ss", linewidth = 2, linestyle = :dot, marker = :square, markersize = 4)
+
+    hline!(
+    p4,
+    [0],
+    color = :black,
+    linestyle = :dash,
+    linewidth = 1,
+    label = ""
+    )
 
     p5 = plot(
         df_free.period,
         df_free.trade_balance_to_gdp,
         label = "free debt",
+        linewidth = 2,
         title = "Trade Balance / GDP",
-        xlabel = "Period"
+        xlabel = "Period",
+        linestyle = :solid,
+        marker = :circle,
+        markersize = 4
     )
-    plot!(p5, df_dbar.period, df_dbar.trade_balance_to_gdp, label = "d_T = dbar")
-    plot!(p5, df_lambda.period, df_lambda.trade_balance_to_gdp, label = "lambda_T = lambda_ss")
+    plot!(p5, df_dbar.period, df_dbar.trade_balance_to_gdp, label = "d_T = dbar", linewidth = 2, linestyle = :dash, marker = :diamond, markersize = 4)
+    plot!(p5, df_lambda.period, df_lambda.trade_balance_to_gdp, label = "lambda_T = lambda_ss", linewidth = 2, linestyle = :dot, marker = :square, markersize = 4)
+
+    hline!(
+    p5,
+    [0],
+    color = :black,
+    linestyle = :dash,
+    linewidth = 1,
+    label = ""
+    )
 
     p6 = plot(
         df_free.period,
         df_free.current_account_to_gdp,
         label = "free debt",
+        linewidth = 2,
         title = "Current Account / GDP",
-        xlabel = "Period"
+        xlabel = "Period",
+        linestyle = :solid,
+        marker = :circle,
+        markersize = 4
     )
-    plot!(p6, df_dbar.period, df_dbar.current_account_to_gdp, label = "d_T = dbar")
-    plot!(p6, df_lambda.period, df_lambda.current_account_to_gdp, label = "lambda_T = lambda_ss")
+    plot!(p6, df_dbar.period, df_dbar.current_account_to_gdp, label = "d_T = dbar", linewidth = 2, linestyle = :dash, marker = :diamond, markersize = 4)
+    plot!(p6, df_lambda.period, df_lambda.current_account_to_gdp, label = "lambda_T = lambda_ss", linewidth = 2, linestyle = :dot, marker = :square, markersize = 4)
+
+    hline!(
+    p6,
+    [0],
+    color = :black,
+    linestyle = :dash,
+    linewidth = 1,
+    label = ""
+    )
 
     fig = plot(
         p1, p2, p3, p4, p5, p6,
         layout = (3, 2),
         size = (1000, 800)
     )
-
-    display(fig)
 
     fig_path = joinpath(figures_dir, "model5_pf_irfs.png")
     savefig(fig, fig_path)

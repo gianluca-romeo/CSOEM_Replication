@@ -16,11 +16,11 @@ end
 # Styles
 function get_style_dictionary()
     return Dict(
-        "M1"  => (:solid, :circle),
-        "M1a" => (:dash, :rect),
-        "M2"  => (:dot, :diamond),
-        "M3"  => (:dashdot, :utriangle),
-        "M4"  => (:solid, :xcross)
+        "M1"  => (:solid, :circle, 3),
+        "M1a" => (:dash, :rect, 5),
+        "M2"  => (:dot, :diamond, 2),
+        "M3"  => (:dashdot, :utriangle, 1),
+        "M4"  => (:solid, :xcross, 4)
     )
 end
 
@@ -85,7 +85,7 @@ function run_sgu_irfs(active_models;
                 vec(irf_mat[1, :]) :
                 vec(irf_mat[:, 1])
 
-            linestyle, marker = styles[name]
+            linestyle, marker, color = styles[name]
 
             plot!(
                 p[panel],
@@ -95,6 +95,7 @@ function run_sgu_irfs(active_models;
                 linewidth = 2,
                 linestyle = linestyle,
                 marker = marker,
+                color = color,
                 markersize = 4,
                 title = titles[v],
                 xlabel = ""
@@ -112,10 +113,10 @@ function run_sgu_irfs(active_models;
         )
     end
 
-    display(p)
-
     path = joinpath(figures_dir, "selected_models_irfs.png") # Save
     savefig(p, path)
 
-    return p
+    println("Selected models IRFs in:")
+    println("  ", path)
+
 end

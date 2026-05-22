@@ -20,7 +20,7 @@ https://gianluca-romeo.github.io/CSOEM_Replication/
 
 ---
 
-## Project Structure
+## Repository Structure
 
 ```text
 CSOEM_Replication/

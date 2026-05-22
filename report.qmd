@@ -5,6 +5,7 @@ author:
   - name: Gianluca Romeo
     affiliation: Collegio Carlo Alberto and University of Turin
     email: gianlucaromeo2000@gmail.com
+    orcid: 0009-0000-9853-9757
 
   - name: Matteo Cagno
     affiliation: Collegio Carlo Alberto and University of Turin
